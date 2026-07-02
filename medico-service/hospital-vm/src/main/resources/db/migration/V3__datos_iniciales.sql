@@ -1,0 +1,2 @@
+INSERT INTO medicos (nombre, especialidad, telefono) VALUES ('Dr. Alexis Sanchez', 'Traumatología', '+56911111111');
+INSERT INTO medicos (nombre, especialidad, telefono) VALUES ('Dra. Maria Perez', 'Pediatría', '+56922222222');

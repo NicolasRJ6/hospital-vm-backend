@@ -1,0 +1,16 @@
+# Java / Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# VS Code
+.vscode/
+.project
+.classpath
+.factorypath
+.settings/
+
+# Laragon / Respaldo
+backup_hospital.sql

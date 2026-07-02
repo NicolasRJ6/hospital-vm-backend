@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS turnos;
+DROP TABLE IF EXISTS medicos;
