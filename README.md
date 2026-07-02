@@ -25,9 +25,12 @@ El sistema se basa en el desacoplamiento de responsabilidades, dividiéndose en 
     Microservicio de Médicos (medico-service): Servicio de apoyo (Puerto 8082). Provee información detallada sobre el personal clínico y sus especialidades.
 
 Tecnologías e Implementaciones Técnicas
+
 1. Persistencia y Migración (Flyway & Hibernate)
 
 Se implementó Flyway para el control de versiones de la base de datos (Database as Code). El historial de migración abarca desde la creación de esquemas base hasta la limpieza de tablas obsoletas (V1 a V7), garantizando que el entorno de desarrollo sea idéntico al de producción. Hibernate actúa como ORM para el mapeo de entidades.
+
+
 2. Seguridad Avanzada (Spring Security & JWT)
 
 Implementación de un modelo de seguridad Stateless:
@@ -37,13 +40,18 @@ Implementación de un modelo de seguridad Stateless:
     BCrypt: Encriptación de contraseñas de nivel bancario para el resguardo de credenciales.
 
     Filtros Personalizados: Uso de JwtFilter para interceptar y validar peticiones en tiempo real.
+    
 
 3. Optimización: Carga Masiva de Datos
 
 Desarrollo de un servicio de carga masiva capaz de procesar grandes volúmenes de información sin saturar la memoria RAM. Se utilizan los métodos flush() y clear() de la interfaz EntityManager para vaciar el contexto de persistencia de Hibernate tras cada lote (batch) de 50 registros.
+
+
 4. Comunicación Inter-Microservicio (OpenFeign)
 
 El sistema utiliza OpenFeign para la comunicación síncrona. El microservicio de pacientes consume datos del microservicio de médicos de forma declarativa, permitiendo un flujo de información coherente entre los componentes distribuidos.
+
+
 5. Documentación Profesional (Swagger & HATEOAS)
 
     Swagger/OpenAPI 3: Interfaz web interactiva con documentación semántica de todos los controladores.
@@ -56,6 +64,8 @@ Configuración de un Trigger de Backup mediante @Scheduled. El sistema ejecuta a
 Estructura del Proyecto
 code Text
 
+
+
 Hospital-VM-Final/
 ├── hospital-vm/               # Microservicio Principal (8080)
 │   ├── src/main/java/...      # Controller, Service, Repository, Security, DTO, Assembler
@@ -64,6 +74,9 @@ Hospital-VM-Final/
 └── medico-service/            # Microservicio de Apoyo (8082)
     ├── src/main/java/...      # Controller, Service, Repository
     └── pom.xml                # Dependencias específicas
+
+
+    
  
  Configuración e Instalación
 
@@ -81,6 +94,8 @@ Hospital-VM-Final/
         Swagger UI: http://localhost:8080/swagger-ui.html
 
         Base de datos: Verificable en HeidiSQL.
+
+        
 
 Testing
 
