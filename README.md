@@ -1,109 +1,92 @@
-Sistema de Gestión Clínica: Hospital Vida y Meditación (V&M)
+Hospital Vida y Meditación (V&M)
 
-![alt text](https://img.shields.io/badge/Java-21-orange?style=for-the-badge&logo=java)
+    Solución Backend de Microservicios para Gestión Clínica Profesional
 
-
-![alt text](https://img.shields.io/badge/Spring_Boot-3.2.5-brightgreen?style=for-the-badge&logo=spring-boot)
-
-
-![alt text](https://img.shields.io/badge/MariaDB-8.4-blue?style=for-the-badge&logo=mariadb)
+![alt text](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 
 
-![alt text](https://img.shields.io/badge/JWT-JSON_Web_Token-black?style=for-the-badge&logo=json-web-tokens)
-
-Descripción del Proyecto
-
-El proyecto Hospital Vida y Meditación es una solución backend robusta diseñada bajo una arquitectura de microservicios. El sistema permite la gestión integral de fichas clínicas de pacientes, integrando prácticas de medicina tradicional con beneficios de terapias naturales.
-
-Este software fue desarrollado por la consultora tecnológica Nuvox Technologi como parte del proceso de migración de una infraestructura monolítica hacia un ecosistema distribuido, escalable y de alta disponibilidad.
- Arquitectura del Sistema
-
-El sistema se basa en el desacoplamiento de responsabilidades, dividiéndose en servicios autónomos que gestionan su propia persistencia (Database per Service):
-
-    Microservicio de Pacientes (hospital-vm): Puerta de entrada principal (Puerto 8080). Gestiona la seguridad, autenticación de usuarios y la data maestra de los pacientes.
-
-    Microservicio de Médicos (medico-service): Servicio de apoyo (Puerto 8082). Provee información detallada sobre el personal clínico y sus especialidades.
-
-Tecnologías e Implementaciones Técnicas
-
-1. Persistencia y Migración (Flyway & Hibernate)
-
-Se implementó Flyway para el control de versiones de la base de datos (Database as Code). El historial de migración abarca desde la creación de esquemas base hasta la limpieza de tablas obsoletas (V1 a V7), garantizando que el entorno de desarrollo sea idéntico al de producción. Hibernate actúa como ORM para el mapeo de entidades.
+![alt text](https://img.shields.io/badge/Spring_Boot-3.2.5-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
 
 
-2. Seguridad Avanzada (Spring Security & JWT)
-
-Implementación de un modelo de seguridad Stateless:
-
-    JWT (JSON Web Token): Generación y validación de tokens Bearer para proteger los endpoints.
-
-    BCrypt: Encriptación de contraseñas de nivel bancario para el resguardo de credenciales.
-
-    Filtros Personalizados: Uso de JwtFilter para interceptar y validar peticiones en tiempo real.
-    
-
-3. Optimización: Carga Masiva de Datos
-
-Desarrollo de un servicio de carga masiva capaz de procesar grandes volúmenes de información sin saturar la memoria RAM. Se utilizan los métodos flush() y clear() de la interfaz EntityManager para vaciar el contexto de persistencia de Hibernate tras cada lote (batch) de 50 registros.
+![alt text](https://img.shields.io/badge/MariaDB-8.4-003545?style=for-the-badge&logo=mariadb&logoColor=white)
 
 
-4. Comunicación Inter-Microservicio (OpenFeign)
+![alt text](https://img.shields.io/badge/JWT-Stateless-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white)
 
-El sistema utiliza OpenFeign para la comunicación síncrona. El microservicio de pacientes consume datos del microservicio de médicos de forma declarativa, permitiendo un flujo de información coherente entre los componentes distribuidos.
+📌 Contexto del Proyecto
 
+Este proyecto representa la modernización digital del Hospital Vida y Meditación (V&M) en Puerto Montt. Implementamos una arquitectura distribuida para gestionar pacientes y personal médico, asegurando la privacidad de los datos y la alta disponibilidad de los servicios mediante el uso de microservicios independientes.
+🏗️ Arquitectura y Microservicios
 
-5. Documentación Profesional (Swagger & HATEOAS)
+El sistema se divide en dos componentes desacoplados que se comunican mediante OpenFeign:
 
-    Swagger/OpenAPI 3: Interfaz web interactiva con documentación semántica de todos los controladores.
+    hospital-vm (Puerto 8080): Servicio central. Gestiona el registro de pacientes, la seguridad JWT y la orquestación de datos.
 
-    HATEOAS: Implementación del Nivel 3 de Madurez de Richardson en la API de pacientes (V2), proporcionando enlaces dinámicos (_links) para la navegabilidad del cliente.
+    medico-service (Puerto 8082): Microservicio de apoyo. Mantiene el catálogo de médicos y especialidades clínicas.
 
-6. Resiliencia: Backup Automatizado
+🛠️ Stack Tecnológico e Implementaciones
+🔐 1. Seguridad y Autenticación
 
-Configuración de un Trigger de Backup mediante @Scheduled. El sistema ejecuta automáticamente un proceso de mysqldump cada periodo programado, almacenando un respaldo físico .sql en una ruta segura (C:/temp).
-Estructura del Proyecto
-code Text
+    JWT (JSON Web Token): Autenticación basada en tokens para una arquitectura Stateless.
 
+    BCrypt: Enmascaramiento de contraseñas de administrativos y personal técnico.
 
+    Filtros de Seguridad: Implementación de JwtFilter para validación de cabeceras en cada petición.
 
-Hospital-VM-Final/
-├── hospital-vm/               # Microservicio Principal (8080)
-│   ├── src/main/java/...      # Controller, Service, Repository, Security, DTO, Assembler
-│   ├── src/main/resources/    # application.properties (Perfiles: dev/test), db/migration (V1-V7)
-│   └── pom.xml                # Dependencias core
-└── medico-service/            # Microservicio de Apoyo (8082)
-    ├── src/main/java/...      # Controller, Service, Repository
-    └── pom.xml                # Dependencias específicas
+🔄 2. Persistencia y Migraciones (Flyway)
 
+    Database as Code: Uso de Flyway para la evolución controlada del esquema SQL.
 
-    
- 
- Configuración e Instalación
+    Versiones: Historial documentado desde V1 hasta V7, incluyendo creación de tablas y limpieza de datos obsoletos.
 
-    Base de Datos: Crear los esquemas db_hospital_vm y db_medicos en MariaDB (Laragon).
+    Hibernate: Mapeo de entidades bajo el patrón JPA.
 
-    Perfiles: Asegurar que spring.profiles.active=dev esté configurado en los archivos de propiedades.
+⚡ 3. Optimización de Memoria (Carga Masiva)
 
-    Ejecución: Ejecutar ambos servicios simultáneamente mediante el comando:
+    Uso de EntityManager con métodos flush() y clear().
+
+    Procesamiento por lotes (Batch size: 50) para evitar el desbordamiento de la memoria RAM al cargar miles de fichas clínicas.
+
+📡 4. Comunicación Inter-servicio
+
+    OpenFeign: Cliente HTTP declarativo que permite al servicio de pacientes consultar al servicio de médicos en tiempo real de forma transparente.
+
+📖 5. Documentación y Navegabilidad
+
+    Swagger / OpenAPI 3: Interfaz interactiva para pruebas de API con soporte para inyección de Token JWT.
+
+    HATEOAS: Implementación del Nivel 3 de Madurez de Richardson, añadiendo enlaces dinámicos (_links) para mejorar la navegabilidad del cliente.
+
+💾 6. Resiliencia y Backup
+
+    Trigger de Respaldo: Tarea programada vía @Scheduled que ejecuta un mysqldump automático cada 2 minutos hacia una ruta segura en C:/temp.
+
+🚀 Instalación y Uso
+
+    Requisitos: Tener instalado Laragon (MariaDB 8.4) y Java 21.
+
+    Base de Datos: Crear los esquemas vacíos db_hospital_vm y db_medicos.
+
+    Configuración: Verificar la ruta de mysqldump en BackupService.java.
+
+    Lanzamiento:
     code Bash
 
+    # En la carpeta hospital-vm
     mvn spring-boot:run
 
-    Acceso:
+    # En la carpeta medico-service
+    mvn spring-boot:run
 
-        Swagger UI: http://localhost:8080/swagger-ui.html
+    Acceso Web: http://localhost:8080/swagger-ui.html
 
-        Base de datos: Verificable en HeidiSQL.
+🧪 Pruebas Unitarias
 
-        
+El proyecto cuenta con una robusta suite de pruebas unitarias usando JUnit 5 y Mockito, garantizando que la lógica de negocio esté validada al 100% de forma aislada.
+👥 Integrantes
 
-Testing
+    Nicola Delgado - Líder de Desarrollo Backend
 
-Se incluye una suite de pruebas unitarias desarrolladas con JUnit 5 y Mockito, logrando una cobertura completa en la capa de servicios y validando el contexto de seguridad mediante @WithMockUser.
-Desarrolladores
+    Pedro Rivas - Arquitecto de Sistemas Distribuidos
 
-    Nicola Delgado - Ingeniero de Software / Backend Developer
-
-    Pedro Rivas - Ingeniero de Software / Arquitecto de Datos
-
-Este proyecto es parte de la formación académica de Duoc UC - Desarrollo Fullstack I.
+Desarrollado para la asignatura de Desarrollo Fullstack I - Duoc UC
